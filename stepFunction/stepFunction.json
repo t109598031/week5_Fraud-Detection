@@ -1,0 +1,55 @@
+{
+  "Comment": "fraudDetection",
+  "StartAt": "rekognition",
+  "States": {
+    "rekognition": {
+      "Type": "Task",
+      "Resource": "<rekognition Lambda ARN>",
+      "Next": "Parallel State"
+    },
+    "Parallel State": {
+      "Type": "Parallel",
+      "InputPath": "$",
+      "OutputPath": "$",
+      "ResultPath":"$.ParallelResultPath",
+      "Branches": [
+        {
+          "StartAt": "memberDataTranform",
+          "States": {
+            "memberDataTranform": {
+              "Type": "Task",
+              "InputPath":"$",
+              "OutputPath":"$.temporaryOutput",
+              "ResultPath": "$.temporaryOutput",
+              "Resource": "<memberDataTranform Lambda ARN>",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "notMemberDataTranform",
+          "States": {
+            "notMemberDataTranform": {
+              "Type": "Task",
+              "OutputPath":"$.temporaryOutput",
+              "ResultPath": "$.temporaryOutput",
+              "Resource": "<notMemberDataTranform Lambda ARN>",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Next": "fraudDetect"
+    },
+    "fraudDetect": {
+      "Type": "Task",
+      "Resource": "<fraudDetect Lambda ARN>",
+      "Next":"alertNotify"
+    },
+    "alertNotify": {
+      "Type": "Task",
+      "Resource": "<alertNotify Lambda ARN>",
+      "End": true
+    }
+  }
+}
