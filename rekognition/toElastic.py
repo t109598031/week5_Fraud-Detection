@@ -1,9 +1,7 @@
 import json
 import requests
 from datetime import datetime
-es_url = ""
-es_AN = ""
-es_password = ""
+
 def storeToElastic(data, site):
     # data = event
     # eventTimestamp = int(data['frame']["captureResult"]['timestamp'])
@@ -15,7 +13,7 @@ def storeToElastic(data, site):
 
     data = json.dumps(data)
     headers={'Accept': 'application/json', 'Content-type': 'application/json'}
-    elastic_url =es_url+site+'/_doc/'
-    response = requests.post(elastic_url, data = data, auth=(es_AN,es_password), headers = headers)
+    elastic_url =config.es_url+site+'/_doc/'
+    response = requests.post(config.es_url, data = data, auth=(config.es_AN,config.es_password), headers = headers)
     print('elasticsearch Check---------------------------')
     print (response)
