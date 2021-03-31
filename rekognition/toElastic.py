@@ -1,6 +1,7 @@
 import json
 import requests
 from datetime import datetime
+import config
 
 def storeToElastic(data, site):
     # data = event
