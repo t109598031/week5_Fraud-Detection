@@ -4,7 +4,7 @@ from cutImage import image_splite
 import time
 import config
 import boto3
-# from toElastic import storeToElastic
+from toElastic import storeToElastic
 
 def lambda_handler(event, context):
     client = boto3.client('s3', aws_access_key_id=config.aws_access_key_id, aws_secret_access_key=config.aws_secret_access_key,region_name=config.region_name)
@@ -52,6 +52,6 @@ def lambda_handler(event, context):
     outputModel["site"] = event["config"]["site"]
     outputModel["imageUrl"] = imageUrl
     outputModel["frameId"] = event["id"] 
-    # storeToElastic(outputModel, event["config"]["site"])
+    storeToElastic(outputModel, event["config"]["site"])
     # print(outputModel)
     return outputModel
