@@ -139,13 +139,13 @@ class NotMemberDataTransform:
         
     
     def __s3Read(self):
-        obj = self.__s3client.get_object(Bucket = config.s3Bucket,Key = "notMemberState.json")
+        obj = self.__s3client.get_object(Bucket = config.s3Bucket,Key = config.AWS_S3_FILE_KEY)
         readString = obj["Body"]
         readString_utf8 = readString.read().decode('utf-8')
         return json.loads(readString_utf8)
         
     def __s3Write(self,model):
-        response = self.__s3client.put_object(Bucket=config.s3Bucket, Key="notMemberState.json", Body=json.dumps(model),ACL='public-read',ContentType = 'text/json')
+        response = self.__s3client.put_object(Bucket=config.s3Bucket, Key=config.AWS_S3_FILE_KEY, Body=json.dumps(model),ACL='public-read',ContentType = 'text/json')
         return response
         
     def getModel(self):
